@@ -7,15 +7,22 @@ angular.module('WeatherApp', [])
 
 CityController.$inject = ['CityService']
 function CityController(CityService) {
+  var getCity = this;
   
+  getCity.cityName = "";
+  
+  getCity.addCity = function() {
+    CityService.addCity(getCity.cityName);
+  }
 }
 
-CityService.$inject = ['$http']
-function CityService($http) {
+function CityService(){
   var service = this;
-
-  // service.getCity
+  var city = "";
+  
+  service.addCity = function(cityName) {
+    city = cityName;
+  };
 }
-
 
 })();

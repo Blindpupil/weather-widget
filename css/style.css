@@ -23,6 +23,10 @@
   top: 12%;
 }
 
+.intro-container .row .col-xs-12 i:hover {
+  cursor: pointer;
+}
+
 .intro-container .row p {
   margin-top: 2%;
   font-size: 1.1em;
