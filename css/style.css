@@ -1,3 +1,48 @@
+/*Intro*/
+.intro-container {
+    padding: 200px;
+}
+
+#city-input {
+  border: none;
+  border-bottom: 2px solid #495c6b;
+  text-align: center;
+  font-size: 2.5em;
+  font-weight: bold;
+}
+
+#city-input:focus {
+  outline: 0;
+}
+
+.intro-container .row .col-xs-12 i {
+  border-bottom: 2px solid #495c6b;      /*not proud of this solution*/
+  padding-bottom: 0.9%;
+  font-size: 2.5em;
+  position: absolute;
+  top: 12%;
+}
+
+.intro-container .row p {
+  margin-top: 2%;
+  font-size: 1.1em;
+}
+
+#use-current {
+  font-size: 1.3em;
+}
+
+#use-current a {
+  color: #495c6b;
+  border-bottom: 1px dotted #495c6b;
+}
+
+#use-current a:hover {
+  text-decoration: none;
+}
+
+
+/*Weather*/
 #widget-body {
     font-family: 'Roboto', sans-serif;
     background-color: #fe826a;
@@ -157,11 +202,28 @@
 	left: 60px;
 }
 
-@media (max-width: 1024px) {
+@media (min-width: 1200px) {
+  .intro-container .row .col-xs-12 i {
+    top: 12%;
+  }
+}
+
+@media (min-width: 992px) and (max-width: 1199px){
   #widget-body {
       margin: 2%;
   }
+
   .celsius-button {
     margin: 30px 10px;
+  }
+
+  .intro-container .row .col-xs-12 i {
+    top: 12%;
+  }
+}
+
+@media (max-width: 991px) {
+  .intro-container .row .col-xs-12 i {
+    top: 19%;
   }
 }

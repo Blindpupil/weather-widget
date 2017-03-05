@@ -1,18 +1,37 @@
 <!DOCTYPE html>
-<html>
+<html ng-app="WeatherApp">
 <head>
   <meta charset="utf-8">
-    <link href="css/style.css" rel="stylesheet">
-    <link href="css/bootstrap.css" rel="stylesheet">
-    <link href="css/weather-icons.min.css" rel="stylesheet">
+    <link href="../css/style.css" rel="stylesheet">
+    <link href="../css/bootstrap.css" rel="stylesheet">
+    <link href="../css/weather-icons.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+    <link rel="stylesheet" href="css/font/font-awesome/css/font-awesome.min.css">
 
+    <script src="angular.js"> </script>
+    <script src="app.js"> </script>
     <script src="js/jquery-3.1.1.min.js"> </script>
     <script src="js/bootstrap.js"> </script>
     <title>Weather Forecast Widget</title>
 </head>
 <body id="widget-body">
-  <div class="container widget-container">
+
+  <div class="container intro-container" ng-controller='CityController as city'>
+    <div class="row">
+      <div class="col-xs-12 text-center">
+        <input id="city-input" type="text" ng-model="city.cityName" placeholder="City">
+        <i class="fa fa-search" aria-hidden="true"></i>
+      </div>
+    </div>
+
+    <div class="row">
+      <p class="text-center">or</p>
+      <p class="text-center" id="use-current">use my <a href="">current position</a></p>
+    </div>
+
+  </div>
+
+  <!-- <div class="container widget-container">
     <div class="row">
 
       <div class="city pull-left">
@@ -118,10 +137,12 @@
           <p> 4°C </p>
         </div>
 
-      </div>
-    </div> <!--EOF WEEk ROW -->
+      </div> -->
+    <!-- </div> EOF WEEk ROW -->
 
-  </div> <!--EOF CONTAINER -->
+  <!-- </div> EOF CONTAINER -->
+
+
 
 </body>
 </html>
