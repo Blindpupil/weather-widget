@@ -3,14 +3,15 @@
 
 angular.module('WeatherApp', [])
 .controller('CityController', CityController)
-.service('CityService', CityService);
+.service('CityService', CityService)
+.filter('dateFilter', dateFilterFactory);
 
 
 var APIlink = "http://api.openweathermap.org/data/2.5/forecast/daily?q=London&units=metric&cnt=7&APPID=bdd0f8bac1c71172d94ac71ff7b8aeab"; 
 
 
-CityController.$inject = ['CityService'];
-function CityController(CityService, WeatherService) {
+CityController.$inject = ['CityService', '$filter', 'dateFilter' ];
+function CityController(CityService, $filter, dateFilter) {
   var getCity = this;
   
   getCity.cityName = "";
@@ -30,11 +31,43 @@ function CityController(CityService, WeatherService) {
     getCity.isFirstStep = true;
   };
   
+  var promise = CityService.getWeather();
+  
+  promise.then(function(response){
+    getCity.weather = response.data;
+    console.log(getCity.weather);
+  })
+  .catch(function(error){
+    console.log("Something didn't work");
+  });
+  
+  
+  getCity.units = "metric";
+  
+  getCity.changeUnit = function() {
+    if (getCity.units == "metric") {
+      getCity.units = "imperial";
+    } else {
+        getCity.units = "metric";
+      }
+      console.log(getCity.units);
+    }; 
+ 
+}
+
+//Filter to fix date
+function dateFilterFactory() {
+  return function(input) {
+    input = input || "";
+    input = input * 1000;
+    return input;
+  };
 }
 
 
 //Business logic below
-function CityService(){
+CityService.$inject = ['$http'];
+function CityService($http) {
   var service = this;
   
   var city = [];
@@ -50,9 +83,13 @@ function CityService(){
     city.splice(itemIndex, 1);
   };
 
-  service.getCity = function() {
-    return city;
+  service.getWeather = function() {
+    var response = $http({
+      method: "GET",
+      url: "https://weather-widget-blindpupil.c9users.io/api.JSON"
+    });
+    return response;
   };
-  
+
 }
 })();

@@ -41,7 +41,7 @@
 
       <div class="celsius-button pull-right">
         <div class="switch">
-          <input type="checkbox" checked>
+          <input type="checkbox" checked ng-click="getCity.changeUnit();">
           <label>
             <span class="show-celsius">°C</span>
             <span class="show-farenheit">°F</span>
@@ -54,18 +54,18 @@
 
     <div class="row">
       <div class="date col-xs-12">
-        <p> Monday, March 6th 2017 </p>
+        <p> {{getCity.weather.list[0].dt | dateFilter | date : 'fullDate' }}</p>
       </div>
 
       <div class="weather-title col-xs-12">
-        <p>Light snow</p>
+        <p style="text-transform: capitalize">{{getCity.weather.list[0].weather[0].description}}</p>
       </div>
     </div>
 
     <div class="row">
 
       <div class="temperature pull-left">
-        <span>4°C</span>
+        <span>{{getCity.weather.list[0].temp.day | number:0}}°C</span>
         <i class="wi wi-day-sunny"></i>
       </div>
 
@@ -73,19 +73,19 @@
         <table>
           <tr>
             <td>Morning</td>
-            <td>5°C </td>
+            <td>{{getCity.weather.list[0].temp.morn | number:0}}°C </td>
           </tr>
           <tr>
             <td>Day</td>
-            <td>4°C</td>
+            <td>{{getCity.weather.list[0].temp.day | number:0}}°C</td>
           </tr>
           <tr>
             <td>Evening</td>
-            <td>0°C</td>
+            <td>{{getCity.weather.list[0].temp.eve | number:0}}°C</td>
           </tr>
           <tr>
             <td>Night</td>
-            <td>1°C</td>
+            <td>{{getCity.weather.list[0].temp.night | number:0}}°C</td>
           </tr>
         </table>
       </div>
@@ -98,43 +98,43 @@
         <div class="day-in-week pull-left">
           <p> Monday </p>
           <i class="wi wi-day-sunny"></i>
-          <p> 4°C </p>
+          <p> {{getCity.weather.list[0].temp.day | number:0}}°C </p>
         </div>
 
         <div class="day-in-week pull-left">
           <p> Tuesday </p>
           <i class="wi wi-day-sunny"></i>
-          <p> 4°C </p>
+          <p> {{getCity.weather.list[1].temp.day | number:0}}°C </p>
         </div>
 
         <div class="day-in-week pull-left">
           <p> Wednesday </p>
           <i class="wi wi-day-sunny"></i>
-          <p> 4°C </p>
+          <p> {{getCity.weather.list[2].temp.day | number:0}}°C </p>
         </div>
 
         <div class="day-in-week pull-left">
           <p> Thursday </p>
           <i class="wi wi-day-sunny"></i>
-          <p> 4°C </p>
+          <p> {{getCity.weather.list[3].temp.day | number:0}}°C </p>
         </div>
 
         <div class="day-in-week pull-left">
           <p> Friday </p>
           <i class="wi wi-day-sunny"></i>
-          <p> 4°C </p>
+          <p> {{getCity.weather.list[4].temp.day | number:0}}°C </p>
         </div>
 
         <div class="day-in-week pull-left">
           <p> Saturday </p>
           <i class="wi wi-day-sunny"></i>
-          <p> 4°C </p>
+          <p> {{getCity.weather.list[5].temp.day | number:0}}°C </p>
         </div>
 
         <div class="day-in-week pull-left">
           <p> Sunday </p>
           <i class="wi wi-day-sunny"></i>
-          <p> 4°C </p>
+          <p> {{getCity.weather.list[6].temp.day | number:0}}°C </p>
         </div>
 
       </div>
