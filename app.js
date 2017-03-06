@@ -3,7 +3,6 @@
 
 angular.module('WeatherApp', [])
 .controller('CityController', CityController)
-.controller('ShowCityController', ShowCityController)
 .service('CityService', CityService);
 
 
@@ -11,30 +10,30 @@ var APIlink = "http://api.openweathermap.org/data/2.5/forecast/daily?q=London&un
 
 
 CityController.$inject = ['CityService'];
-function CityController(CityService) {
+function CityController(CityService, WeatherService) {
   var getCity = this;
   
   getCity.cityName = "";
   
   getCity.addCity = function() {
     CityService.addCity(getCity.cityName);
-    console.log(getCity.cityName);
   };
-}
-
-ShowCityController.$inject = ['CityService'];
-function ShowCityController(CityService) {
-  var showCity = this; 
   
-  showCity.city = CityService.getCity();
+  getCity.isFirstStep = true;
   
-  showCity.removeCity = function(itemIndex) {
+  getCity.showCity = function() {
+    getCity.isFirstStep = false;
+  };
+  
+  getCity.removeCity = function(itemIndex) {
     CityService.removeCity(itemIndex);
+    getCity.isFirstStep = true;
   };
   
 }
 
 
+//Business logic below
 function CityService(){
   var service = this;
   
@@ -54,6 +53,6 @@ function CityService(){
   service.getCity = function() {
     return city;
   };
-
+  
 }
 })();

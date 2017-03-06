@@ -17,7 +17,7 @@
 }
 
 .intro-container .row .col-xs-12 i {
-  border-bottom: 2px solid #495c6b;      /*not proud of this solution*/
+  border-bottom: 2px solid #495c6b;
   padding-bottom: 0.9%;
   font-size: 2.5em;
   position: absolute;
@@ -75,6 +75,10 @@
 
 .city i {
   padding: 0px 15px;
+}
+
+.wi-direction-left:hover {
+  cursor: pointer;
 }
 
 .celsius-button {

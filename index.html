@@ -16,7 +16,7 @@
 </head>
 <body id="widget-body" ng-controller='CityController as getCity'>
 
-  <div class="container intro-container" ng-if="!getCity.cityName">
+  <div class="container intro-container" ng-show="getCity.isFirstStep">
     <div class="row">
       <div class="col-xs-12 text-center">
         <input id="city-input" type="text" ng-model="getCity.cityName" placeholder="City">
@@ -30,13 +30,12 @@
     </div>
 
   </div>
-  
 
-  <div class="container widget-container" ng-if="getCity.cityName">
+  <div class="container widget-container" ng-hide="getCity.isFirstStep">
     <div class="row">
 
       <div class="city pull-left">
-        <i class="wi wi-direction-left"></i>
+        <i class="wi wi-direction-left" ng-click="getCity.removeCity();"></i>
         <span>{{getCity.cityName}}</span>
       </div>
 
