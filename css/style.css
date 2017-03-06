@@ -9,6 +9,7 @@
   text-align: center;
   font-size: 2.5em;
   font-weight: bold;
+  height: 54px;
 }
 
 #city-input:focus {
@@ -20,7 +21,7 @@
   padding-bottom: 0.9%;
   font-size: 2.5em;
   position: absolute;
-  top: 12%;
+  height: 54px;
 }
 
 .intro-container .row .col-xs-12 i:hover {
@@ -179,7 +180,7 @@
   border: 1px solid #686c6f;
 }
 
-/* Letter styles */
+/* Temp. letter styles */
 .switch .show-celsius {
   font-size: 20px;
 	left: 10px;
@@ -206,12 +207,6 @@
 	left: 60px;
 }
 
-@media (min-width: 1200px) {
-  .intro-container .row .col-xs-12 i {
-    top: 12%;
-  }
-}
-
 @media (min-width: 992px) and (max-width: 1199px){
   #widget-body {
       margin: 2%;
@@ -221,13 +216,4 @@
     margin: 30px 10px;
   }
 
-  .intro-container .row .col-xs-12 i {
-    top: 12%;
-  }
-}
-
-@media (max-width: 991px) {
-  .intro-container .row .col-xs-12 i {
-    top: 19%;
-  }
 }
