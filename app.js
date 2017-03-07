@@ -2,58 +2,117 @@
 'use strict';
 
 angular.module('WeatherApp', [])
-.controller('CityController', CityController)
-.service('CityService', CityService)
+.controller('WeatherController', WeatherController)
+.service('WeatherService', WeatherService)
 .filter('dateFilter', dateFilterFactory)
 .filter('unitFilter', unitFilterFactory)
-.constant('ApiBasePath', "https://weather-widget-blindpupil.c9users.io/api.JSON");
+.constant('ApiBasePath', "https://weather-widget-blindpupil.c9users.io/");
 
 var APIlink = "http://api.openweathermap.org/data/2.5/forecast/daily?q=London&units=metric&cnt=7&APPID=bdd0f8bac1c71172d94ac71ff7b8aeab"; 
 
 
-CityController.$inject = ['CityService', '$filter', 'dateFilter'];
-function CityController(CityService, $filter, dateFilter) {
-  var getCity = this;
+WeatherController.$inject = ['WeatherService', '$filter', 'dateFilter'];
+function WeatherController(WeatherService, $filter, dateFilter) {
+  var weatherData = this;
   
-  getCity.cityName = "";
+  weatherData.isFirstStep = true;
   
-  getCity.addCity = function() {
-    CityService.addCity(getCity.cityName);
+  weatherData.showCity = function(cityName) {
+    
+    var promise = WeatherService.getWeather(cityName);
+    
+    promise
+    .then(function(response){
+      weatherData.weather = response.data;
+      weatherData.getIcon();
+      
+      console.log(weatherData.weather);
+      })
+      .catch(function(error){
+        console.log("Something didn't work");
+      });
+      
+    weatherData.isFirstStep = false;
+    
   };
   
-  getCity.isFirstStep = true;
+  weatherData.cityName = "";
   
-  getCity.showCity = function() {
-    getCity.isFirstStep = false;
+  weatherData.addCity = function(cityName) {
+    WeatherService.addCity(weatherData.cityName);
+    console.log(weatherData.cityName);
   };
   
-  getCity.removeCity = function(itemIndex) {
-    CityService.removeCity(itemIndex);
-    getCity.isFirstStep = true;
+  
+  weatherData.removeCity = function(itemIndex) {
+    WeatherService.removeCity(itemIndex);
+    weatherData.isFirstStep = true;
   };
   
-  getCity.units = ""; 
   
-  getCity.changeUnit = function(){
-    if (getCity.units == false) {
-      getCity.units = true; 
+  weatherData.units = ""; 
+  
+  weatherData.changeUnit = function(){
+    if (weatherData.units == false) {
+      weatherData.units = true; 
       
     } else {
-      getCity.units = false;  
+      weatherData.units = false;  
       }
   };
   
-  var promise = CityService.getWeather();
   
-  promise.then(function(response){
-    getCity.weather = response.data;
-    console.log(getCity.weather);
-  })
-  .catch(function(error){
-    console.log("Something didn't work");
-  });
-
- 
+  weatherData.icon = "";
+  
+  weatherData.getIcon = function() {
+    var mainDescription = weatherData.weather.list[0].weather[0].main;
+    
+    switch(mainDescription) {
+      case 'Rain':
+        weatherData.icon = "rain";
+        break;
+      case 'Drizzle':
+        weatherData.icon = "showers";
+        break;
+      case 'Clouds':
+        weatherData.icon = "day-cloudy";
+        break;
+      case 'Snow':
+        weatherData.icon = "snow";
+        break;
+      case 'Clear':
+        weatherData.icon = "day-sunny";
+        break;
+      case 'Thunderstorm':
+        weatherData.icon = "thunderstorm";
+        break;
+      case 'Extreme':
+        weatherData.icon = "hurricane";
+        break;
+      case 'Additional':
+        weatherData.icon = "cloudy-gusts";
+        break;
+      case 'Atmosphere':
+        weatherData.icon = "fog";
+        break;
+               
+      default:
+        weatherData.icon = "meteor";
+        console.log("Boom! I don't know what that main description is");
+    }
+  };
+  
+  weatherData.getPosition = function() {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(function(position){
+        weatherData.currentPosition = position;
+        console.log(weatherData.currentPosition);
+      });
+    }
+    return weatherData.currentPosition;
+  };
+  
+  
 }
 
 
@@ -74,8 +133,8 @@ function unitFilterFactory() {
 }
 
 
-CityService.$inject = ['$http', 'ApiBasePath'];
-function CityService($http, ApiBasePath) {
+WeatherService.$inject = ['$http', 'ApiBasePath'];
+function WeatherService($http, ApiBasePath) {
   var service = this;
   
   var city = [];
@@ -88,13 +147,15 @@ function CityService($http, ApiBasePath) {
   };
 
   service.removeCity = function(itemIndex) {
-    city.splice(itemIndex, 1);
+    // city.splice(itemIndex, 1);
   };
   
-  service.getWeather = function() {
+  service.getWeather = function(cityName) {
     var response = $http({
-      method: "GET",
-      url: (ApiBasePath)
+      url: (ApiBasePath + cityName + '.JSON'),
+      params: {
+        name: cityName
+      }
     });
     return response;
   };
