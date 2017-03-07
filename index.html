@@ -65,7 +65,8 @@
     <div class="row">
 
       <div class="temperature pull-left">
-        <span>{{getCity.weather.list[0].temp.day | number:0}}°C</span>
+        <span ng-hide="getCity.units">{{getCity.weather.list[0].temp.day | number:0}}°C</span>
+        <span ng-show="getCity.units">{{getCity.weather.list[0].temp.day | unitFilter | number:0}}°F</span>
         <i class="wi wi-day-sunny"></i>
       </div>
 
@@ -73,19 +74,23 @@
         <table>
           <tr>
             <td>Morning</td>
-            <td>{{getCity.weather.list[0].temp.morn | number:0}}°C </td>
+            <td ng-hide="getCity.units">{{getCity.weather.list[0].temp.morn | number:0}}°C </td>
+            <td ng-show="getCity.units">{{getCity.weather.list[0].temp.morn | unitFilter | number:0}}°F </td>
           </tr>
           <tr>
             <td>Day</td>
-            <td>{{getCity.weather.list[0].temp.day | number:0}}°C</td>
+            <td ng-hide="getCity.units">{{getCity.weather.list[0].temp.day | number:0}}°C</td>
+            <td ng-show="getCity.units">{{getCity.weather.list[0].temp.day | unitFilter | number:0}}°F</td>
           </tr>
           <tr>
             <td>Evening</td>
-            <td>{{getCity.weather.list[0].temp.eve | number:0}}°C</td>
+            <td ng-hide="getCity.units">{{getCity.weather.list[0].temp.eve | number:0}}°C</td>
+            <td ng-show="getCity.units">{{getCity.weather.list[0].temp.eve | unitFilter | number:0}}°F</td>
           </tr>
           <tr>
             <td>Night</td>
-            <td>{{getCity.weather.list[0].temp.night | number:0}}°C</td>
+            <td ng-hide="getCity.units">{{getCity.weather.list[0].temp.night | number:0}}°C</td>
+            <td ng-show="getCity.units">{{getCity.weather.list[0].temp.night | unitFilter | number:0}}°F</td>
           </tr>
         </table>
       </div>
@@ -98,50 +103,56 @@
         <div class="day-in-week pull-left">
           <p> Monday </p>
           <i class="wi wi-day-sunny"></i>
-          <p> {{getCity.weather.list[0].temp.day | number:0}}°C </p>
+          <p ng-hide="getCity.units"> {{getCity.weather.list[0].temp.day | number:0}}°C </p>
+          <p ng-show="getCity.units"> {{getCity.weather.list[0].temp.day | unitFilter | number:0}}°F </p>
         </div>
 
         <div class="day-in-week pull-left">
           <p> Tuesday </p>
           <i class="wi wi-day-sunny"></i>
-          <p> {{getCity.weather.list[1].temp.day | number:0}}°C </p>
+          <p ng-hide="getCity.units"> {{getCity.weather.list[1].temp.day | number:0}}°C </p>
+          <p ng-show="getCity.units"> {{getCity.weather.list[1].temp.day | unitFilter | number:0}}°F </p>
         </div>
 
         <div class="day-in-week pull-left">
           <p> Wednesday </p>
           <i class="wi wi-day-sunny"></i>
-          <p> {{getCity.weather.list[2].temp.day | number:0}}°C </p>
+          <p ng-hide="getCity.units"> {{getCity.weather.list[2].temp.day | number:0}}°C </p>
+          <p ng-show="getCity.units"> {{getCity.weather.list[2].temp.day | unitFilter | number:0}}°F </p>
         </div>
 
         <div class="day-in-week pull-left">
           <p> Thursday </p>
           <i class="wi wi-day-sunny"></i>
-          <p> {{getCity.weather.list[3].temp.day | number:0}}°C </p>
+          <p ng-hide="getCity.units"> {{getCity.weather.list[3].temp.day | number:0}}°C </p>
+          <p ng-show="getCity.units"> {{getCity.weather.list[3].temp.day | unitFilter | number:0}}°F </p>
         </div>
 
         <div class="day-in-week pull-left">
           <p> Friday </p>
           <i class="wi wi-day-sunny"></i>
-          <p> {{getCity.weather.list[4].temp.day | number:0}}°C </p>
+          <p ng-hide="getCity.units"> {{getCity.weather.list[4].temp.day | number:0}}°C </p>
+          <p ng-show="getCity.units"> {{getCity.weather.list[4].temp.day | unitFilter | number:0}}°F </p>
         </div>
 
         <div class="day-in-week pull-left">
           <p> Saturday </p>
           <i class="wi wi-day-sunny"></i>
-          <p> {{getCity.weather.list[5].temp.day | number:0}}°C </p>
+          <p ng-hide="getCity.units"> {{getCity.weather.list[5].temp.day | number:0}}°C </p>
+          <p ng-show="getCity.units"> {{getCity.weather.list[5].temp.day | unitFilter | number:0}}°F </p>
         </div>
 
         <div class="day-in-week pull-left">
           <p> Sunday </p>
           <i class="wi wi-day-sunny"></i>
-          <p> {{getCity.weather.list[6].temp.day | number:0}}°C </p>
+          <p ng-hide="getCity.units"> {{getCity.weather.list[6].temp.day | number:0}}°C </p>
+          <p ng-show="getCity.units"> {{getCity.weather.list[6].temp.day | unitFilter | number:0}}°F </p>
         </div>
 
       </div>
     </div> <!-- EOF WEEk ROW -->
 
   </div> <!-- EOF CONTAINER -->
-
 
 </body>
 </html>
