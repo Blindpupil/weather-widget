@@ -20,23 +20,25 @@
     <div class="row">
       <div class="col-xs-12 text-center">
         <input id="city-input" type="text" ng-model="weatherData.cityName" placeholder="City">
-        <div style="display: inline;" ng-click="weatherData.addCity(cityName)"><i class="fa fa-search" aria-hidden="true" ng-click="weatherData.showCity();"></i></div> <!-- Not proud of this line -->
+        <i class="fa fa-search" aria-hidden="true" ng-click="weatherData.fetchData(); weatherData.addCity(); weatherData.getIcon();"></i> <!-- Not proud of this line -->
       </div>
     </div>
 
     <div class="row">
       <p class="text-center">or</p>
-      <p class="text-center" id="use-current">use my <a href="" ng-click="weatherData.getPosition();">current position</a></p>
+      <p class="text-center" id="use-current">use my <a href="" ng-click="weatherData.fetchCoordWeather();">current position</a></p>
     </div>
 
   </div>
 
   <div class="container widget-container" ng-hide="weatherData.isFirstStep">
     <div class="row">
+      <!-- <pre>http status code: {{weatherData.status}}</pre>
+      <pre>http response data: {{weatherData.data}}</pre> -->
 
       <div class="city pull-left">
         <i class="wi wi-direction-left" ng-click="weatherData.removeCity();"></i>
-        <span>{{weatherData.cityName}}</span>
+        <span style="text-transform: capitalize;">{{weatherData.data.city.name}}</span>
       </div>
 
       <div class="celsius-button pull-right">
@@ -54,19 +56,19 @@
 
     <div class="row">
       <div class="date col-xs-12">
-        <p> {{weatherData.weather.list[0].dt | dateFilter | date : 'fullDate' }}</p>
+        <p> {{weatherData.data.list[0].dt | dateFilter | date : 'fullDate' }}</p>
       </div>
 
       <div class="weather-title col-xs-12">
-        <p style="text-transform: capitalize">{{weatherData.weather.list[0].weather[0].description}}</p>
+        <p style="text-transform: capitalize">{{weatherData.data.list[0].weather[0].description}}</p>
       </div>
     </div>
 
     <div class="row">
 
       <div class="temperature pull-left">
-        <span ng-hide="weatherData.units">{{weatherData.weather.list[0].temp.day | number:0}}°C</span>
-        <span ng-show="weatherData.units">{{weatherData.weather.list[0].temp.day | unitFilter | number:0}}°F</span>
+        <span ng-hide="weatherData.units">{{weatherData.data.list[0].temp.day | number:0}}°C</span>
+        <span ng-show="weatherData.units">{{weatherData.data.list[0].temp.day | unitFilter | number:0}}°F</span>
         <i class="wi wi-{{weatherData.icon}}"></i>
       </div>
 
@@ -74,23 +76,23 @@
         <table>
           <tr>
             <td>Morning</td>
-            <td ng-hide="weatherData.units">{{weatherData.weather.list[0].temp.morn | number:0}}°C </td>
-            <td ng-show="weatherData.units">{{weatherData.weather.list[0].temp.morn | unitFilter | number:0}}°F </td>
+            <td ng-hide="weatherData.units">{{weatherData.data.list[0].temp.morn | number:0}}°C </td>
+            <td ng-show="weatherData.units">{{weatherData.data.list[0].temp.morn | unitFilter | number:0}}°F </td>
           </tr>
           <tr>
             <td>Day</td>
-            <td ng-hide="weatherData.units">{{weatherData.weather.list[0].temp.day | number:0}}°C</td>
-            <td ng-show="weatherData.units">{{weatherData.weather.list[0].temp.day | unitFilter | number:0}}°F</td>
+            <td ng-hide="weatherData.units">{{weatherData.data.list[0].temp.day | number:0}}°C</td>
+            <td ng-show="weatherData.units">{{weatherData.data.list[0].temp.day | unitFilter | number:0}}°F</td>
           </tr>
           <tr>
             <td>Evening</td>
-            <td ng-hide="weatherData.units">{{weatherData.weather.list[0].temp.eve | number:0}}°C</td>
-            <td ng-show="weatherData.units">{{weatherData.weather.list[0].temp.eve | unitFilter | number:0}}°F</td>
+            <td ng-hide="weatherData.units">{{weatherData.data.list[0].temp.eve | number:0}}°C</td>
+            <td ng-show="weatherData.units">{{weatherData.data.list[0].temp.eve | unitFilter | number:0}}°F</td>
           </tr>
           <tr>
             <td>Night</td>
-            <td ng-hide="weatherData.units">{{weatherData.weather.list[0].temp.night | number:0}}°C</td>
-            <td ng-show="weatherData.units">{{weatherData.weather.list[0].temp.night | unitFilter | number:0}}°F</td>
+            <td ng-hide="weatherData.units">{{weatherData.data.list[0].temp.night | number:0}}°C</td>
+            <td ng-show="weatherData.units">{{weatherData.data.list[0].temp.night | unitFilter | number:0}}°F</td>
           </tr>
         </table>
       </div>
@@ -103,50 +105,50 @@
         <div class="day-in-week pull-left">
           <p> Monday </p>
           <i class="wi wi-day-sunny"></i>
-          <p ng-hide="weatherData.units"> {{weatherData.weather.list[0].temp.day | number:0}}°C </p>
-          <p ng-show="weatherData.units"> {{weatherData.weather.list[0].temp.day | unitFilter | number:0}}°F </p>
+          <p ng-hide="weatherData.units"> {{weatherData.data.list[0].temp.day | number:0}}°C </p>
+          <p ng-show="weatherData.units"> {{weatherData.data.list[0].temp.day | unitFilter | number:0}}°F </p>
         </div>
 
         <div class="day-in-week pull-left">
           <p> Tuesday </p>
           <i class="wi wi-day-sunny"></i>
-          <p ng-hide="weatherData.units"> {{weatherData.weather.list[1].temp.day | number:0}}°C </p>
-          <p ng-show="weatherData.units"> {{weatherData.weather.list[1].temp.day | unitFilter | number:0}}°F </p>
+          <p ng-hide="weatherData.units"> {{weatherData.data.list[1].temp.day | number:0}}°C </p>
+          <p ng-show="weatherData.units"> {{weatherData.data.list[1].temp.day | unitFilter | number:0}}°F </p>
         </div>
 
         <div class="day-in-week pull-left">
           <p> Wednesday </p>
           <i class="wi wi-day-sunny"></i>
-          <p ng-hide="weatherData.units"> {{weatherData.weather.list[2].temp.day | number:0}}°C </p>
-          <p ng-show="weatherData.units"> {{weatherData.weather.list[2].temp.day | unitFilter | number:0}}°F </p>
+          <p ng-hide="weatherData.units"> {{weatherData.data.list[2].temp.day | number:0}}°C </p>
+          <p ng-show="weatherData.units"> {{weatherData.data.list[2].temp.day | unitFilter | number:0}}°F </p>
         </div>
 
         <div class="day-in-week pull-left">
           <p> Thursday </p>
           <i class="wi wi-day-sunny"></i>
-          <p ng-hide="weatherData.units"> {{weatherData.weather.list[3].temp.day | number:0}}°C </p>
-          <p ng-show="weatherData.units"> {{weatherData.weather.list[3].temp.day | unitFilter | number:0}}°F </p>
+          <p ng-hide="weatherData.units"> {{weatherData.data.list[3].temp.day | number:0}}°C </p>
+          <p ng-show="weatherData.units"> {{weatherData.data.list[3].temp.day | unitFilter | number:0}}°F </p>
         </div>
 
         <div class="day-in-week pull-left">
           <p> Friday </p>
           <i class="wi wi-day-sunny"></i>
-          <p ng-hide="weatherData.units"> {{weatherData.weather.list[4].temp.day | number:0}}°C </p>
-          <p ng-show="weatherData.units"> {{weatherData.weather.list[4].temp.day | unitFilter | number:0}}°F </p>
+          <p ng-hide="weatherData.units"> {{weatherData.data.list[4].temp.day | number:0}}°C </p>
+          <p ng-show="weatherData.units"> {{weatherData.data.list[4].temp.day | unitFilter | number:0}}°F </p>
         </div>
 
         <div class="day-in-week pull-left">
           <p> Saturday </p>
           <i class="wi wi-day-sunny"></i>
-          <p ng-hide="weatherData.units"> {{weatherData.weather.list[5].temp.day | number:0}}°C </p>
-          <p ng-show="weatherData.units"> {{weatherData.weather.list[5].temp.day | unitFilter | number:0}}°F </p>
+          <p ng-hide="weatherData.units"> {{weatherData.data.list[5].temp.day | number:0}}°C </p>
+          <p ng-show="weatherData.units"> {{weatherData.data.list[5].temp.day | unitFilter | number:0}}°F </p>
         </div>
 
         <div class="day-in-week pull-left">
           <p> Sunday </p>
           <i class="wi wi-day-sunny"></i>
-          <p ng-hide="weatherData.units"> {{weatherData.weather.list[6].temp.day | number:0}}°C </p>
-          <p ng-show="weatherData.units"> {{weatherData.weather.list[6].temp.day | unitFilter | number:0}}°F </p>
+          <p ng-hide="weatherData.units"> {{weatherData.data.list[6].temp.day | number:0}}°C </p>
+          <p ng-show="weatherData.units"> {{weatherData.data.list[6].temp.day | unitFilter | number:0}}°F </p>
         </div>
 
       </div>

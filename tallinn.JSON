@@ -1,12 +1,12 @@
 {
     "city": {
         "id": 2643743,
-        "name": "London",
+        "name": "Tallinn",
         "coord": {
             "lon": -0.1258,
             "lat": 51.5085
         },
-        "country": "GB",
+        "country": "EE",
         "population": 0
     },
     "cod": "200",

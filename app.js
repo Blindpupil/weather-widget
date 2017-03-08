@@ -2,117 +2,182 @@
 'use strict';
 
 angular.module('WeatherApp', [])
+.config(['$sceDelegateProvider', function($sceDelegateProvider) {
+  $sceDelegateProvider.resourceUrlWhitelist([
+    'self',
+    'http://api.openweathermap.org/data/2.5/forecast/**'  
+    ]); 
+}])  //the call will not work from a https to the http api...
 .controller('WeatherController', WeatherController)
 .service('WeatherService', WeatherService)
 .filter('dateFilter', dateFilterFactory)
 .filter('unitFilter', unitFilterFactory)
-.constant('ApiBasePath', "https://weather-widget-blindpupil.c9users.io/");
+.constant('ApiBaseUrl', 'http://api.openweathermap.org/data/2.5/forecast/daily?q=' )
+.constant('ApiKey', "&mode=JSON&units=metric&cnt=7&APPID=bdd0f8bac1c71172d94ac71ff7b8aeab");
 
-var APIlink = "http://api.openweathermap.org/data/2.5/forecast/daily?q=London&units=metric&cnt=7&APPID=bdd0f8bac1c71172d94ac71ff7b8aeab"; 
+var APIlink = "http://api.openweathermap.org/data/2.5/forecast/daily?q=London&cnt=7&APPID=bdd0f8bac1c71172d94ac71ff7b8aeab";
 
 
-WeatherController.$inject = ['WeatherService', '$filter', 'dateFilter'];
-function WeatherController(WeatherService, $filter, dateFilter) {
+WeatherController.$inject = ['$http', 'ApiBaseUrl', 'ApiKey', 'WeatherService', '$filter', 'dateFilter'];
+function WeatherController($http, ApiBaseUrl, ApiKey, WeatherService, $filter, dateFilter) {
   var weatherData = this;
-  
+
   weatherData.isFirstStep = true;
-  
-  weatherData.showCity = function(cityName) {
-    
-    var promise = WeatherService.getWeather(cityName);
-    
-    promise
-    .then(function(response){
-      weatherData.weather = response.data;
-      weatherData.getIcon();
-      
-      console.log(weatherData.weather);
-      })
-      .catch(function(error){
-        console.log("Something didn't work");
+
+  weatherData.cityName = '';
+
+  weatherData.fetchData = function() {
+
+    weatherData.icon = "";
+
+    weatherData.response = null;
+
+    $http({method: 'GET', url: ApiBaseUrl + weatherData.cityName.toLowerCase() + ApiKey})
+      .then(function(response){
+        weatherData.status = response.status;
+        weatherData.data = response.data;
+
+        weatherData.getIcon = function() {
+          var mainDescription = weatherData.data.list[0].weather[0].main;
+
+          switch(mainDescription) {
+            case 'Rain':
+              weatherData.icon = "rain";
+              break;
+            case 'Drizzle':
+              weatherData.icon = "showers";
+              break;
+            case 'Clouds':
+              weatherData.icon = "day-cloudy";
+              break;
+            case 'Snow':
+              weatherData.icon = "snow";
+              break;
+            case 'Clear':
+              weatherData.icon = "day-sunny";
+              break;
+            case 'Thunderstorm':
+              weatherData.icon = "thunderstorm";
+              break;
+            case 'Extreme':
+              weatherData.icon = "hurricane";
+              break;
+            case 'Additional':
+              weatherData.icon = "cloudy-gusts";
+              break;
+            case 'Atmosphere':
+              weatherData.icon = "fog";
+              break;
+
+            default:
+              weatherData.icon = "meteor";
+              console.log("Boom! I don't know what that main description is");
+          }
+        };
+        weatherData.getIcon();
+
+      }, function(response) {
+        weatherData.data = response.data || 'Request failed';
+        weatherData.status = response.status;
       });
-      
-    weatherData.isFirstStep = false;
-    
+
   };
-  
-  weatherData.cityName = "";
-  
+
+
+  weatherData.fetchCoordWeather = function() {
+    weatherData.isFirstStep = false;
+
+    weatherData.icon = "";
+
+    weatherData.response = null;
+
+    function getPosition() {
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(function(position){
+          weatherData.currentPosition = position;
+          console.log(weatherData.currentPosition.coords.latitude);
+
+          $http({method: 'GET', url: 'http://api.openweathermap.org/data/2.5/forecast/daily?lat=' + weatherData.currentPosition.coords.latitude + '&lon=' + weatherData.currentPosition.coords.longitude + ApiKey})
+          .then(function(response){
+            weatherData.status = response.status;
+            weatherData.data = response.data;
+
+            weatherData.getIcon = function() {
+              var mainDescription = weatherData.data.list[0].weather[0].main;
+
+              switch(mainDescription) {
+                case 'Rain':
+                  weatherData.icon = "rain";
+                  break;
+                case 'Drizzle':
+                  weatherData.icon = "showers";
+                  break;
+                case 'Clouds':
+                  weatherData.icon = "day-cloudy";
+                  break;
+                case 'Snow':
+                  weatherData.icon = "snow";
+                  break;
+                case 'Clear':
+                  weatherData.icon = "day-sunny";
+                  break;
+                case 'Thunderstorm':
+                  weatherData.icon = "thunderstorm";
+                  break;
+                case 'Extreme':
+                  weatherData.icon = "hurricane";
+                  break;
+                case 'Additional':
+                  weatherData.icon = "cloudy-gusts";
+                  break;
+                case 'Atmosphere':
+                  weatherData.icon = "fog";
+                  break;
+
+                default:
+                  weatherData.icon = "meteor";
+                  console.log("Boom! I don't know what that main description is");
+              }
+            };
+            weatherData.getIcon();
+
+          }, function(response) {
+            weatherData.data = response.data || 'Request failed';
+            weatherData.status = response.status;
+          });
+
+        });
+      }
+    };
+    getPosition();
+
+  };
+
+
   weatherData.addCity = function(cityName) {
     WeatherService.addCity(weatherData.cityName);
-    console.log(weatherData.cityName);
+    weatherData.isFirstStep = false;
   };
-  
-  
+
+
   weatherData.removeCity = function(itemIndex) {
     WeatherService.removeCity(itemIndex);
     weatherData.isFirstStep = true;
   };
-  
-  
-  weatherData.units = ""; 
-  
+
+
+  weatherData.units = "";
+
   weatherData.changeUnit = function(){
     if (weatherData.units == false) {
-      weatherData.units = true; 
-      
+      weatherData.units = true;
+
     } else {
-      weatherData.units = false;  
+      weatherData.units = false;
       }
   };
-  
-  
-  weatherData.icon = "";
-  
-  weatherData.getIcon = function() {
-    var mainDescription = weatherData.weather.list[0].weather[0].main;
-    
-    switch(mainDescription) {
-      case 'Rain':
-        weatherData.icon = "rain";
-        break;
-      case 'Drizzle':
-        weatherData.icon = "showers";
-        break;
-      case 'Clouds':
-        weatherData.icon = "day-cloudy";
-        break;
-      case 'Snow':
-        weatherData.icon = "snow";
-        break;
-      case 'Clear':
-        weatherData.icon = "day-sunny";
-        break;
-      case 'Thunderstorm':
-        weatherData.icon = "thunderstorm";
-        break;
-      case 'Extreme':
-        weatherData.icon = "hurricane";
-        break;
-      case 'Additional':
-        weatherData.icon = "cloudy-gusts";
-        break;
-      case 'Atmosphere':
-        weatherData.icon = "fog";
-        break;
-               
-      default:
-        weatherData.icon = "meteor";
-        console.log("Boom! I don't know what that main description is");
-    }
-  };
-  
-  weatherData.getPosition = function() {
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(function(position){
-        weatherData.currentPosition = position;
-        console.log(weatherData.currentPosition);
-      });
-    }
-    return weatherData.currentPosition;
-  };
-  
-  
+
+
 }
 
 
@@ -133,10 +198,10 @@ function unitFilterFactory() {
 }
 
 
-WeatherService.$inject = ['$http', 'ApiBasePath'];
+WeatherService.$inject = [];
 function WeatherService($http, ApiBasePath) {
   var service = this;
-  
+
   var city = [];
 
   service.addCity = function(cityName) {
@@ -148,16 +213,6 @@ function WeatherService($http, ApiBasePath) {
 
   service.removeCity = function(itemIndex) {
     // city.splice(itemIndex, 1);
-  };
-  
-  service.getWeather = function(cityName) {
-    var response = $http({
-      url: (ApiBasePath + cityName + '.JSON'),
-      params: {
-        name: cityName
-      }
-    });
-    return response;
   };
 
 }
