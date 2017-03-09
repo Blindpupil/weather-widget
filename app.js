@@ -5,14 +5,14 @@ angular.module('WeatherApp', [])
 .config(['$sceDelegateProvider', function($sceDelegateProvider) {
   $sceDelegateProvider.resourceUrlWhitelist([
     'self',
-    'http://api.openweathermap.org/data/2.5/forecast/**'
+    'https://api.openweathermap.org/data/2.5/forecast/**'
     ]);
 }])         //the call will not work from a https to the http api...
 .controller('WeatherController', WeatherController)
 .service('WeatherService', WeatherService)
 .filter('dateFilter', dateFilterFactory)
 .filter('unitFilter', unitFilterFactory)
-.constant('ApiBaseUrl', 'http://api.openweathermap.org/data/2.5/forecast/daily?q=' )
+.constant('ApiBaseUrl', 'https://api.openweathermap.org/data/2.5/forecast/daily?q=' )
 .constant('ApiKey', "&mode=JSON&units=metric&cnt=7&APPID=bdd0f8bac1c71172d94ac71ff7b8aeab");
 
 WeatherController.$inject = ['$http', 'ApiBaseUrl', 'ApiKey', 'WeatherService', '$filter', 'dateFilter'];
@@ -94,7 +94,7 @@ function WeatherController($http, ApiBaseUrl, ApiKey, WeatherService, $filter, d
           weatherData.currentPosition = position;
           console.log(weatherData.currentPosition.coords.latitude);
 
-          $http({method: 'GET', url: 'http://api.openweathermap.org/data/2.5/forecast/daily?lat=' + weatherData.currentPosition.coords.latitude + '&lon=' + weatherData.currentPosition.coords.longitude + ApiKey})
+          $http({method: 'GET', url: 'https://api.openweathermap.org/data/2.5/forecast/daily?lat=' + weatherData.currentPosition.coords.latitude + '&lon=' + weatherData.currentPosition.coords.longitude + ApiKey})
           .then(function(response){
             weatherData.status = response.status;
             weatherData.data = response.data;
