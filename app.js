@@ -5,18 +5,15 @@ angular.module('WeatherApp', [])
 .config(['$sceDelegateProvider', function($sceDelegateProvider) {
   $sceDelegateProvider.resourceUrlWhitelist([
     'self',
-    'http://api.openweathermap.org/data/2.5/forecast/**'  
-    ]); 
-}])  //the call will not work from a https to the http api...
+    'http://api.openweathermap.org/data/2.5/forecast/**'
+    ]);
+}])         //the call will not work from a https to the http api...
 .controller('WeatherController', WeatherController)
 .service('WeatherService', WeatherService)
 .filter('dateFilter', dateFilterFactory)
 .filter('unitFilter', unitFilterFactory)
 .constant('ApiBaseUrl', 'http://api.openweathermap.org/data/2.5/forecast/daily?q=' )
 .constant('ApiKey', "&mode=JSON&units=metric&cnt=7&APPID=bdd0f8bac1c71172d94ac71ff7b8aeab");
-
-var APIlink = "http://api.openweathermap.org/data/2.5/forecast/daily?q=London&cnt=7&APPID=bdd0f8bac1c71172d94ac71ff7b8aeab";
-
 
 WeatherController.$inject = ['$http', 'ApiBaseUrl', 'ApiKey', 'WeatherService', '$filter', 'dateFilter'];
 function WeatherController($http, ApiBaseUrl, ApiKey, WeatherService, $filter, dateFilter) {
@@ -199,7 +196,7 @@ function unitFilterFactory() {
 
 
 WeatherService.$inject = [];
-function WeatherService($http, ApiBasePath) {
+function WeatherService() {
   var service = this;
 
   var city = [];
@@ -212,7 +209,7 @@ function WeatherService($http, ApiBasePath) {
   };
 
   service.removeCity = function(itemIndex) {
-    // city.splice(itemIndex, 1);
+    city.splice(itemIndex, 1);
   };
 
 }

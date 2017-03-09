@@ -3,15 +3,12 @@
 <head>
   <meta charset="utf-8">
     <link href="css/style.css" rel="stylesheet">
-    <link href="css/bootstrap.css" rel="stylesheet">
     <link href="css/weather-icons.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
     <link rel="stylesheet" href="font/font-awesome/css/font-awesome.min.css">
 
     <script src="angular.js"> </script>
     <script src="app.js"> </script>
-    <script src="js/jquery-3.1.1.min.js"> </script>
-    <script src="js/bootstrap.js"> </script>
     <title>Weather Forecast Widget</title>
 </head>
 <body id="widget-body" ng-controller='WeatherController as weatherData'>
@@ -64,7 +61,7 @@
       </div>
     </div>
 
-    <div class="row">
+    <div class="row" id="temp-row">
 
       <div class="temperature pull-left">
         <span ng-hide="weatherData.units">{{weatherData.data.list[0].temp.day | number:0}}°C</span>
